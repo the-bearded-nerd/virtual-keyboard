@@ -3,7 +3,7 @@ export default { ROWS: ROWS };
 
 ROWS[0] = [
   {
-    code: "Backqoute",
+    code: "Backquote",
     rus: {
       lower: "ё",
       upper: "Ё",
