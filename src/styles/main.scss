@@ -5,3 +5,77 @@ html {
   font-size: $font-size;
   color: $font-color;
 }
+
+.keyboard {
+  width: fit-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid #222;
+  background-color: #888;
+  border-radius: 5px;
+  row-gap: 6px;
+  padding: 5px;
+}
+
+.row {
+  display: flex;
+  column-gap: 6px;
+}
+
+.key {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  background-color: #444;
+  border-radius: 3px;
+  justify-content: center;
+  align-items: center;
+  transition: border-radius 0.4s, background-color 0.4s;
+  cursor: pointer;
+  &.Backspace,
+  &.CapsLock,
+  &.ShiftLeft {
+    width: 100px;
+    background-color: #222;
+    font-weight: bold;
+  }
+  &.Tab {
+    width: 50px;
+    background-color: #222;
+    font-weight: bold;
+  }
+  &.Delete {
+    width: 44px;
+    background-color: #222;
+    font-weight: bold;
+  }
+  &.Enter,
+  &.ShiftRight {
+    width: 86px;
+    background-color: #222;
+    font-weight: bold;
+  }
+  &.Space {
+    width: 330px;
+  }
+  &.ControlLeft,
+  &.ControlRight,
+  &.MetaLeft,
+  &.AltLeft,
+  &.AltRight,
+  &.ArrowUp,
+  &.ArrowLeft,
+  &.ArrowDown,
+  &.ArrowRight {
+    background-color: #222;
+    font-weight: bold;
+  }
+  &:hover {
+    background-color: yellowgreen;
+  }
+}
+
+.hidden {
+  display: none;
+}

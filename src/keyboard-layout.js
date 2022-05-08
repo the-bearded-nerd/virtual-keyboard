@@ -1,4 +1,5 @@
-export const keyboard = { ROWS: ROWS };
+let ROWS = [];
+export default { ROWS: ROWS };
 
 ROWS[0] = [
   {
@@ -421,6 +422,21 @@ ROWS[1] = [
       upper: "||",
       caps: "\\",
       capsShift: "||",
+    },
+  },
+  {
+    code: "Delete",
+    rus: {
+      lower: "Del",
+      upper: "Del",
+      caps: "Del",
+      capsShift: "Del",
+    },
+    eng: {
+      lower: "Del",
+      upper: "Del",
+      caps: "Del",
+      capsShift: "Del",
     },
   },
 ];
