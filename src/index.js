@@ -1,2 +1,2 @@
-import "./styles/main.scss";
-import "./keyboard-create";
+import './styles/main.scss';
+import './keyboard';
