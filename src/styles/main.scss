@@ -1,0 +1,121 @@
+$font-size: 1rem;
+$font-color: lightgreen;
+
+$keyboard_background-color: #cfd2cd;
+$keyboard_border-color: #2d3142;
+
+$key-color_light: #fbfbf2;
+$key-color_dark: #fbfbf2;
+$key-color_hover: #e5e6e4;
+$key-color_active: #a6a2a2;
+$key-color_font: #2d3142;
+
+* {
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  color: $key-color_font;
+  font-size: 16px;
+}
+
+.keyboard {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid $keyboard_border-color;
+  background-color: $keyboard_background-color;
+  border-radius: 5px;
+  row-gap: 6px;
+  padding: 5px;
+}
+
+.row {
+  display: flex;
+  column-gap: 6px;
+}
+
+.key {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  background-color: $key-color_light;
+  border-radius: 3px;
+  justify-content: center;
+  align-items: center;
+  transition: border-radius 0.2s, background-color 0.2s;
+  cursor: pointer;
+  &.Backspace,
+  &.CapsLock,
+  &.ShiftLeft {
+    width: 100px;
+    background-color: $key-color_dark;
+    font-weight: bold;
+  }
+  &.Tab {
+    width: 50px;
+    background-color: $key-color_dark;
+    font-weight: bold;
+  }
+  &.Delete {
+    width: 44px;
+    background-color: $key-color_dark;
+    font-weight: bold;
+  }
+  &.Enter,
+  &.ShiftRight {
+    width: 86px;
+    background-color: $key-color_dark;
+    font-weight: bold;
+  }
+  &.Space {
+    width: 330px;
+  }
+  &.ControlLeft,
+  &.ControlRight,
+  &.MetaLeft,
+  &.AltLeft,
+  &.AltRight,
+  &.ArrowUp,
+  &.ArrowLeft,
+  &.ArrowDown,
+  &.ArrowRight {
+    background-color: $key-color_dark;
+    font-weight: bold;
+  }
+  &:hover {
+    background-color: $key-color_hover;
+  }
+  &.active {
+    background-color: $key-color_active;
+    border-radius: 7px;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.container {
+  width: fit-content;
+  margin: 0 auto;
+  padding-top: 30px;
+}
+
+.textarea {
+  width: 100%;
+  height: 250px;
+  font-size: 18px;
+}
+
+body {
+  height: 100vh;
+  font-family: "Trebuchet MS", "Helvetica", sans-serif;
+}
+
+p {
+  text-align: center;
+  font-size: 24px;
+  color: black;
+}
