@@ -69,14 +69,17 @@ const Keyboard = {
 
   createKeys() {
     const fragment = document.createDocumentFragment();
+    /* eslint-disable-next-line */
     for (const row of layout.ROWS) {
       const newRow = document.createElement('div');
       newRow.classList.add('keyboard--row', 'row');
+      /* eslint-disable-next-line */
       for (const key of row) {
         const newKey = document.createElement('div');
         newKey.classList.add('keyboard--key', 'key', key.code);
         const rusPart = document.createElement('span');
         rusPart.classList.add('rus', 'hidden');
+        /* eslint-disable-next-line */
         for (const variant in key.rus) {
           const newVariant = document.createElement('span');
           newVariant.classList.add(variant, 'hidden');
@@ -85,6 +88,7 @@ const Keyboard = {
         }
         const engPart = document.createElement('span');
         engPart.classList.add('eng');
+        /* eslint-disable-next-line */
         for (const variant in key.eng) {
           const newVariant = document.createElement('span');
           newVariant.classList.add(variant, 'hidden');
@@ -105,16 +109,23 @@ const Keyboard = {
 
   toggleLang() {
     let langElems = document.querySelectorAll(`div>.${this.properties.lang}`);
+    /* eslint-disable-next-line */
     for (const elem of langElems) {
       elem.classList.add('hidden');
       elem
         .querySelectorAll(`span.${this.properties.case}`)[0]
         .classList.add('hidden');
     }
-    this.properties.lang === 'rus'
-      ? (this.properties.lang = 'eng')
-      : (this.properties.lang = 'rus');
+    if (this.properties.lang === 'rus') {
+      this.properties.lang = 'eng';
+    } else {
+      this.properties.lang = 'rus';
+    }
+    // this.properties.lang === 'rus'
+    //   ? (this.properties.lang = 'eng')
+    //   : (this.properties.lang = 'rus');
     langElems = document.querySelectorAll(`div>.${this.properties.lang}`);
+    /* eslint-disable-next-line */
     for (const elem of langElems) {
       elem.classList.remove('hidden');
       elem
@@ -128,6 +139,7 @@ const Keyboard = {
     const thisLangElems = document.querySelectorAll(
       `div>.${this.properties.lang}`,
     );
+    /* eslint-disable-next-line */
     for (const elem of thisLangElems) {
       elem
         .querySelectorAll(`span.${this.properties.case}`)[0]
@@ -145,6 +157,7 @@ const Keyboard = {
     } else {
       this.properties.case = 'lower';
     }
+    /* eslint-disable-next-line */
     for (const elem of thisLangElems) {
       elem
         .querySelectorAll(`span.${this.properties.case}`)[0]
@@ -155,12 +168,13 @@ const Keyboard = {
   keyAction() {
     let text = this.elements.textarea.value;
     const textSelector = this.elements.textarea.selectionStart;
+    /* eslint-disable-next-line */
     const addChar = function () {
       if (textSelector >= 0 && textSelector <= text.length) {
-        (this.elements.textarea.value = text.slice(0, textSelector)
+        this.elements.textarea.value = text.slice(0, textSelector)
           + this.current.char
-          + text.slice(textSelector, text.length)),
-        (this.elements.textarea.selectionStart = textSelector + this.current.char.length);
+          + text.slice(textSelector, text.length);
+        this.elements.textarea.selectionStart = textSelector + this.current.char.length;
         this.elements.textarea.selectionEnd = textSelector + this.current.char.length;
       } else {
         this.elements.textarea.value += this.current.char;
@@ -188,8 +202,8 @@ const Keyboard = {
             text = text.slice(0, textSelector - 1)
               + text.slice(textSelector, text.length);
             this.elements.textarea.value = text;
-            this.elements.textarea.selectionStart = textSelector;
-            this.elements.textarea.selectionEnd = textSelector;
+            this.elements.textarea.selectionStart = textSelector - 1;
+            this.elements.textarea.selectionEnd = textSelector - 1;
           }
           break;
         case 'Tab':
@@ -232,6 +246,8 @@ const Keyboard = {
             this.elements.textarea.selectionStart = textSelector;
             this.elements.textarea.selectionEnd = textSelector;
           }
+          break;
+        default:
           break;
       }
     } else {
@@ -276,30 +292,57 @@ const Keyboard = {
     this.current.element = e.target.closest('.key');
     if (this.current.element) {
       this.current.char = this.current.element.querySelectorAll(':not(.hidden)')[1].textContent;
-      this.current.code = this.current.element.classList[2];
+      [, , this.current.code] = this.current.element.classList;
+      // this.current.code = this.current.element.classList[2];
       if (this.current.code !== 'CapsLock') {
         this.addActive();
       }
       this.keyAction();
+      this.previous = { ...this.current };
       e.preventDefault();
     }
   },
 
   mouseUpHandler(e) {
+    this.current.element = e.target.closest('.key');
     if (this.current.element) {
-      if (!this.current.element.classList.contains('CapsLock')) {
+      [, , this.current.code] = this.current.element.classList;
+      // this.current.code = this.current.element.classList[2];
+    } else {
+      this.current = { ...this.previous };
+    }
+    if (this.current.element) {
+      if (this.current.element === this.previous.element) {
+        [, , this.current.code] = this.current.element.classList;
+      } else {
+        this.current = { ...this.previous };
+      }
+      if (this.current.code !== 'CapsLock') {
         this.removeActive();
       }
-      if (this.current.element.classList.contains('ShiftLeft')) {
+      if (this.properties.shiftLeft && this.current.code === 'ShiftLeft') {
         this.properties.shiftLeft = false;
         this.toggleCase();
       }
-      if (this.current.element.classList.contains('ShiftRight')) {
+      if (this.properties.shiftRight && this.current.code === 'ShiftRight') {
         this.properties.shiftRight = false;
         this.toggleCase();
       }
-      this.current.element = null;
     }
+    // if (this.current.element) {
+    //   if (!this.current.element.classList.contains("CapsLock")) {
+    //     this.removeActive();
+    //   }
+    //   if (this.current.element.classList.contains("ShiftLeft")) {
+    //     this.properties.shiftLeft = false;
+    //     this.toggleCase();
+    //   }
+    //   if (this.current.element.classList.contains("ShiftRight")) {
+    //     this.properties.shiftRight = false;
+    //     this.toggleCase();
+    //   }
+    //   this.current.element = null;
+    // }
   },
 };
 
