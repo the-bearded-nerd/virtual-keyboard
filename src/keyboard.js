@@ -69,27 +69,24 @@ const Keyboard = {
 
   createKeys() {
     const fragment = document.createDocumentFragment();
-    /* eslint-disable-next-line */
-    for (const row of layout.ROWS) {
+    layout.ROWS.forEach((row) => {
       const newRow = document.createElement('div');
       newRow.classList.add('keyboard--row', 'row');
-      /* eslint-disable-next-line */
-      for (const key of row) {
+      row.forEach((key) => {
         const newKey = document.createElement('div');
         newKey.classList.add('keyboard--key', 'key', key.code);
         const rusPart = document.createElement('span');
         rusPart.classList.add('rus', 'hidden');
-        /* eslint-disable-next-line */
-        for (const variant in key.rus) {
+        Object.keys(key.rus).forEach((variant) => {
           const newVariant = document.createElement('span');
           newVariant.classList.add(variant, 'hidden');
           newVariant.textContent = key.rus[variant];
           rusPart.append(newVariant);
-        }
+        });
         const engPart = document.createElement('span');
         engPart.classList.add('eng');
-        /* eslint-disable-next-line */
-        for (const variant in key.eng) {
+
+        Object.keys(key.eng).forEach((variant) => {
           const newVariant = document.createElement('span');
           newVariant.classList.add(variant, 'hidden');
           if (variant === 'lower') {
@@ -97,41 +94,38 @@ const Keyboard = {
           }
           newVariant.textContent = key.eng[variant];
           engPart.append(newVariant);
-        }
+        });
+
         newKey.append(rusPart);
         newKey.append(engPart);
         newRow.append(newKey);
-      }
+      });
       fragment.append(newRow);
-    }
+    });
     return fragment;
   },
 
   toggleLang() {
     let langElems = document.querySelectorAll(`div>.${this.properties.lang}`);
-    /* eslint-disable-next-line */
-    for (const elem of langElems) {
+    langElems.forEach((elem) => {
       elem.classList.add('hidden');
       elem
         .querySelectorAll(`span.${this.properties.case}`)[0]
         .classList.add('hidden');
-    }
+    });
+
     if (this.properties.lang === 'rus') {
       this.properties.lang = 'eng';
     } else {
       this.properties.lang = 'rus';
     }
-    // this.properties.lang === 'rus'
-    //   ? (this.properties.lang = 'eng')
-    //   : (this.properties.lang = 'rus');
     langElems = document.querySelectorAll(`div>.${this.properties.lang}`);
-    /* eslint-disable-next-line */
-    for (const elem of langElems) {
+    langElems.forEach((elem) => {
       elem.classList.remove('hidden');
       elem
         .querySelectorAll(`span.${this.properties.case}`)[0]
         .classList.remove('hidden');
-    }
+    });
     localStorage.setItem('lang', this.properties.lang);
   },
 
@@ -139,12 +133,11 @@ const Keyboard = {
     const thisLangElems = document.querySelectorAll(
       `div>.${this.properties.lang}`,
     );
-    /* eslint-disable-next-line */
-    for (const elem of thisLangElems) {
+    thisLangElems.forEach((elem) => {
       elem
         .querySelectorAll(`span.${this.properties.case}`)[0]
         .classList.toggle('hidden');
-    }
+    });
     if (
       this.properties.caps
       && (this.properties.shiftLeft || this.properties.shiftRight)
@@ -157,19 +150,17 @@ const Keyboard = {
     } else {
       this.properties.case = 'lower';
     }
-    /* eslint-disable-next-line */
-    for (const elem of thisLangElems) {
+    thisLangElems.forEach((elem) => {
       elem
         .querySelectorAll(`span.${this.properties.case}`)[0]
         .classList.toggle('hidden');
-    }
+    });
   },
 
   keyAction() {
     let text = this.elements.textarea.value;
     const textSelector = this.elements.textarea.selectionStart;
-    /* eslint-disable-next-line */
-    const addChar = function () {
+    function locAddChar() {
       if (textSelector >= 0 && textSelector <= text.length) {
         this.elements.textarea.value = text.slice(0, textSelector)
           + this.current.char
@@ -179,7 +170,8 @@ const Keyboard = {
       } else {
         this.elements.textarea.value += this.current.char;
       }
-    }.bind(this);
+    }
+    const addChar = locAddChar.bind(this);
     if (
       [
         'Backspace',
@@ -293,7 +285,6 @@ const Keyboard = {
     if (this.current.element) {
       this.current.char = this.current.element.querySelectorAll(':not(.hidden)')[1].textContent;
       [, , this.current.code] = this.current.element.classList;
-      // this.current.code = this.current.element.classList[2];
       if (this.current.code !== 'CapsLock') {
         this.addActive();
       }
@@ -307,7 +298,6 @@ const Keyboard = {
     this.current.element = e.target.closest('.key');
     if (this.current.element) {
       [, , this.current.code] = this.current.element.classList;
-      // this.current.code = this.current.element.classList[2];
     } else {
       this.current = { ...this.previous };
     }
@@ -329,20 +319,6 @@ const Keyboard = {
         this.toggleCase();
       }
     }
-    // if (this.current.element) {
-    //   if (!this.current.element.classList.contains("CapsLock")) {
-    //     this.removeActive();
-    //   }
-    //   if (this.current.element.classList.contains("ShiftLeft")) {
-    //     this.properties.shiftLeft = false;
-    //     this.toggleCase();
-    //   }
-    //   if (this.current.element.classList.contains("ShiftRight")) {
-    //     this.properties.shiftRight = false;
-    //     this.toggleCase();
-    //   }
-    //   this.current.element = null;
-    // }
   },
 };
 
